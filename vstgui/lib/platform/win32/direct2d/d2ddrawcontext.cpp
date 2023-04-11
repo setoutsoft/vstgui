@@ -399,7 +399,7 @@ void D2DDrawContext::drawBitmap (CBitmap* bitmap, const CRect& dest, const CPoin
 {
 	if (renderTarget == nullptr)
 		return;
-	ConcatClip concatClip (*this, dest);
+	//ConcatClip concatClip (*this, dest);
 	D2DApplyClip ac (this);
 	if (ac.isEmpty ())
 		return;

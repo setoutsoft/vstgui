@@ -587,15 +587,20 @@ bool VST3Editor::requestResize (const CPoint& newSize)
 	CCoord width = newSize.x;
 	CCoord height = newSize.y;
 	double scaleFactor = getAbsScaleFactor ();
-	if (editingEnabled || (width >= std::round (minSize.x * scaleFactor) && width <= std::round (maxSize.x * scaleFactor)
-                        && height >= std::round (minSize.y * scaleFactor) && height <= std::round (maxSize.y * scaleFactor)))
-	{
-		Steinberg::ViewRect vr;
-		vr.right = static_cast<Steinberg::int32> (width);
-		vr.bottom = static_cast<Steinberg::int32> (height);
-		return plugFrame->resizeView (this, &vr) == Steinberg::kResultTrue ? true : false;
+	if (!editingEnabled) {
+		if (width < std::round(minSize.x * scaleFactor))
+			width = std::round(minSize.x * scaleFactor);
+		if (width > std::round(maxSize.x * scaleFactor))
+			width = std::round(maxSize.x * scaleFactor);
+		if (height < std::round(minSize.y * scaleFactor))
+			height = std::round(minSize.y * scaleFactor);
+		if (height > std::round(maxSize.y * scaleFactor))
+			height = std::round(maxSize.y * scaleFactor);
 	}
-	return false;
+	Steinberg::ViewRect vr;
+	vr.right = static_cast<Steinberg::int32> (width);
+	vr.bottom = static_cast<Steinberg::int32> (height);
+	return plugFrame->resizeView(this, &vr) == Steinberg::kResultTrue ? true : false;
 }
 
 //-----------------------------------------------------------------------------
